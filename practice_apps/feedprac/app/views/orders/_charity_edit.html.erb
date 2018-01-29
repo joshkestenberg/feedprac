@@ -1,0 +1,21 @@
+<h1>Claim this order</h1>
+<%= form_for [user, order] do |f| %>
+
+  <%= f.hidden_field :pickup_start, :value => order.pickup_start %>
+  <%= f.hidden_field :pickup_end, :value => order.pickup_end %>
+  <%= f.hidden_field :picked_up, :value => order.picked_up %>
+  <%= f.hidden_field :dropped_off, :value => order.dropped_off %>
+  <%= f.hidden_field :transit, :value => order.transit %>
+  <%= f.hidden_field :complete, :value => order.complete %>
+  <%= f.hidden_field :awaiting_pick, :value => order.awaiting_pick %>
+  <%= f.hidden_field :ready_pick, :value => order.ready_pick %>
+  <%= f.hidden_field :awaiting_approval, :value => true %>
+  <%= f.hidden_field :ready_claim, :value => false %>
+  <%= f.hidden_field :claim_time, :value => Time.current %>
+
+  <%= f.label :dropoff_end %>
+  <%= f.datetime_select :dropoff_end, default: order.pickup_end + 30.minutes %>
+
+  <%= f.submit "claim" %>
+
+<% end %>

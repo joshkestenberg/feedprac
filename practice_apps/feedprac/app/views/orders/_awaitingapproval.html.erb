@@ -1,0 +1,18 @@
+<div class="orders">
+  <h2>Awaiting Approval</h2>
+  <% if user.role == "business" || user.role == "charity" %>
+    <% user_orders.where(awaiting_approval: true).order(:claim_time).each do |o| %>
+      <%= o %>
+      <% if user.role == "business" %>
+        <%= link_to "approve", approve_path(user, o) %>
+        <%= link_to "deny", deny_path(user, o) %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <% all_orders.where(awaiting_approval: true).order(:claim_time).each do |o| %>
+      <%= o %>
+        <%= link_to "approve", approve_path(user, o) %>
+        <%= link_to "deny", deny_path(user, o) %>
+    <% end %>
+  <% end %>
+</div>

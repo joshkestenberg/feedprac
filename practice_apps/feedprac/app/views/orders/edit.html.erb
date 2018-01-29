@@ -1,0 +1,16 @@
+<% if @user != current_user %>
+  <p>You're unauthorized to view this content<p>
+<% else %>
+  <% case @user.role%>
+  <% when "business" %>
+    <%= render partial: "business_edit", locals: {user: @user, order: @order}%>
+  <% when "charity" %>
+    <%= render partial: "charity_edit", locals: {user: @user, order: @order}%>
+  <% when "driver admin" %>
+    <%= render partial: "driver_admin_edit", locals: {user: @user, order: @order}%>
+  <% when "driver" %>
+    <%= render partial: "driver_edit", locals: {user: @user, order: @order}%>
+  <% when "admin" %>
+    <%= render partial: "admin_edit", locals: {user: @user, order: @order}%>
+  <% end %>
+<% end %>

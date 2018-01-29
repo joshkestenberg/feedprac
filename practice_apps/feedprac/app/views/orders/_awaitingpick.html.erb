@@ -1,0 +1,19 @@
+<div class="orders">
+  <h2>Awaiting pickup!</h2>
+  <% if user.role != "admin" %>
+    <% order_set = user_orders %>
+  <% else %>
+    <% order_set = all_orders %>
+  <% end %>
+
+  <% order_set.where(awaiting_pick: true).order(:claim_time).each do |o| %>
+    <%= o %>
+    <% case @user.role%>
+    <% when "driver", "driver admin" %>
+      <%= link_to "Picked up", pickdrop_path(user, o) %>
+    <% when "admin" %>
+      <%= link_to "Edit", edit_user_order_path(user, o) %>
+      <%= link_to "Picked up", pickdrop_path(user, o) %>
+    <% end %>
+  <% end %>
+</div>

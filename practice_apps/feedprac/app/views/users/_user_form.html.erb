@@ -1,0 +1,12 @@
+<%= form_for user do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :role %>
+  <%= f.select :role, ['business', 'charity', 'driver', 'driver admin', 'admin'] %>
+
+  <%= f.label 'driver admin name (if applicable)' %>
+  <%= f.text_field :driver_admin %>
+
+  <%= f.submit "submit" %>
+<% end %>

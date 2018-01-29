@@ -1,0 +1,45 @@
+<h1> Edit Order </h1>
+
+<%= form_for [user, order] do |f| %>
+
+  <%= f.hidden_field :pickup_start, value: order.pickup_start %>
+  <%= f.hidden_field :pickup_end, value: order.pickup_end %>
+  <%= f.hidden_field :dropoff_end, value: order.dropoff_end %>
+  <%= f.hidden_field :claim_time, value: order.claim_time %>
+
+  <%= f.label :business_name %>
+  <%= f.select :driver_name, User.where(role: "business").collect { |u| u.name }, {include_blank: true} %>
+
+  <%= f.label :charity_name %>
+  <%= f.select :driver_name, User.where(role: "charity").collect { |u| u.name }, {include_blank: true} %>
+
+  <%= f.label :driver_name %>
+  <%= f.select :driver_name, User.where(role: "driver").collect { |u| u.name }, {include_blank: true} %>
+
+  <%= f.label :driver_admin_name %>
+  <%= f.select :driver_admin_name, User.where(role: "driver admin").collect { |u| u.name }, {include_blank: true} %>
+
+  <%= f.label :picked_up %>
+  <%= f.check_box :picked_up %>
+
+  <%= f.label :dropped_off %>
+  <%= f.check_box :dropped_off %>
+
+  <%= f.label :ready_claim %>
+  <%= f.check_box :ready_claim %>
+
+  <%= f.label :ready_pick %>
+  <%= f.check_box :ready_pick %>
+
+  <%= f.label :awaiting_pick %>
+  <%= f.check_box :awaiting_pick %>
+
+  <%= f.label :transit %>
+  <%= f.check_box :transit%>
+
+  <%= f.label :complete %>
+  <%= f.check_box :complete %>
+
+  <%= f.submit %>
+
+<% end %>

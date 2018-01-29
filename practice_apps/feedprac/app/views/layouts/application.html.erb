@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Feedprac</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% flash.each do |name, msg| %>
+      <%= content_tag :div, msg, class: name %>
+    <% end %>
+
+    <% if current_user %>
+      <% if current_user.role == "business" || current_user.role == "admin" %>
+      <div style="float right">
+        <%= link_to "create new order", new_user_order_path(current_user) %>
+      </div>
+      <% end %>
+      <%= "Hello #{current_user.name}" %>
+      <%= link_to "edit profile", edit_user_path(current_user) %>
+      <%= link_to "log out", sessions_path, method: 'delete' %>
+    <% end %>
+    <%= yield %>
+    <%= console %>
+  </body>
+</html>

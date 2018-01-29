@@ -1,0 +1,19 @@
+<div class="orders">
+  <h2>In transit!</h2>
+  <% if user.role != "admin" %>
+    <% order_set = user_orders %>
+  <% else %>
+    <% order_set = all_orders %>
+  <% end %>
+
+  <% order_set.where(transit: true).order(:pickup_start).each do |o| %>
+    <%= o %>
+    <% case @user.role%>
+    <% when "driver", "driver admin" %>
+      <%= link_to "Dropped off", pickdrop_path(user, o) %>
+    <% when "admin" %>
+      <%= link_to "Edit", edit_user_order_path(user, o) %>
+      <%= link_to "Dropped off", pickdrop_path(user, o) %>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,27 @@
+<h1>New Order<h2>
+
+<% if @user != current_user %>
+  <p>You're unauthorized to view this content<p>
+<% else %>
+  <%= form_for [@user, @order] do |f| %>
+
+    <%= f.hidden_field :dropoff_end, value: @order.dropoff_end %>
+    <%= f.hidden_field :claim_time, value: @order.claim_time %>
+    <%= f.hidden_field :picked_up, value: @order.picked_up %>
+    <%= f.hidden_field :dropped_off, value: @order.dropped_off %>
+    <%= f.hidden_field :ready_claim, value: @order.ready_claim %>
+    <%= f.hidden_field :transit, value: @order.transit %>
+    <%= f.hidden_field :complete, value: @order.complete %>
+    <%= f.hidden_field :ready_pick, value: @order.ready_pick %>
+    <%= f.hidden_field :awaiting_pick, value: @order.awaiting_pick %>
+
+    <%= f.label :pickup_start %>
+    <%= f.datetime_select :pickup_start, default: Time.current %>
+
+    <%= f.label :pickup_end %>
+    <%= f.datetime_select :pickup_end, default: Time.current + 30.minutes %>
+
+    <%= f.submit %>
+
+  <% end %>
+<% end %>
