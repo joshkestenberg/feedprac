@@ -6,7 +6,7 @@
     <% order_set = all_orders %>
   <% end %>
 
-  <% order_set.where(complete: true).order(:pickup_end).each do |o| %>
+  <% order_set.where(status: "complete").order(:pickup_end).each do |o| %>
     <%= o %>
   <% end %>
 </div>

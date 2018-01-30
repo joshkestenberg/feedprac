@@ -6,12 +6,12 @@
   <!-- the following data is role-dependant -->
   <% case @user.role%>
   <% when "business", "charity", "admin" %>
-    <%= render partial: "readyclaim", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
-    <%= render partial: "awaitingapproval", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
+    <%= render partial: "available", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
+    <%= render partial: "pending_approval", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
   <% end %>
   <!-- whereas everybody sees these categories -->
-  <%= render partial: "readypick", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
-  <%= render partial: "awaitingpick", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
-  <%= render partial: "transit", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
+  <%= render partial: "seeking_driver", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
+  <%= render partial: "awaiting_pickup", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
+  <%= render partial: "in_transit", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
   <%= render partial: "complete", locals: {user: @user, all_orders: @all_orders, user_orders: @user_orders} %>
 <% end %>

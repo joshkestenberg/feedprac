@@ -7,9 +7,9 @@ class Order < ApplicationRecord
   attr_accessor :driver_name, :driver_admin_name, :charity_name, :business_name
 
   def self.can_edit?(user, order)
-    if (user.role == "business" || user.role == "charity") && order.ready_claim != true
+    if (user.role == "business" || user.role == "charity") && order.status != "available"
       false
-    elsif (user.role == "driver" || user.role == "driver admin") && order.ready_pick != true
+    elsif (user.role == "driver" || user.role == "driver admin") && order.status != "seeking driver"
       false
     else
       true
@@ -36,20 +36,19 @@ class Order < ApplicationRecord
 
   def pickup_start_valid?
     if self.pickup_start < Time.current - 1.minute
-      errors.add(:pickup_start, 'cannot be earlier than current time')
+      errors.add(:pickup_start, 'must be later than current time')
     end
   end
 
   def pickup_end_valid?
-    if self.pickup_start + 30.minutes < self.pickup_end
+    if self.pickup_end < self.pickup_start + 30.minutes
+      throw
       errors.add(:pickup_end, 'must leave at least a 30 minute window for pickup')
     end
   end
 
   def dropoff_end_valid?
-    if self.pickup_start + 30.minutes < self.pickup_end
-      errors.add(:pickup_end, 'must leave at least a 30 minute window for pickup')
-    elsif self.dropoff_end != nil && self.dropoff_end + 30.minutes < self.pickup_end
+    if self.dropoff_end != nil && self.dropoff_end < self.pickup_end  + 30.minutes
       errors.add(:dropoff_end, 'must be at least 30 minutes after end of pickup window')
     end
   end

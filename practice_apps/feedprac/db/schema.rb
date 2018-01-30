@@ -10,23 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180129224118) do
+ActiveRecord::Schema.define(version: 20180130181431) do
 
   create_table "orders", force: :cascade do |t|
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.datetime "pickup_start"
     t.datetime "pickup_end"
     t.datetime "dropoff_end"
     t.datetime "dropped_off"
-    t.boolean  "ready_claim",       default: true
-    t.boolean  "ready_pick"
-    t.boolean  "transit"
-    t.boolean  "complete"
     t.datetime "claim_time"
     t.datetime "picked_up"
-    t.boolean  "awaiting_pick"
-    t.boolean  "awaiting_approval"
+    t.string   "status",       default: "available"
   end
 
   create_table "orders_users", id: false, force: :cascade do |t|

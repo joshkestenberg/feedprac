@@ -1,11 +1,11 @@
 <div class="orders">
   <h2>Orders yet to be claimed for delivery!</h2>
   <% if user.role == "business" || user.role == "charity" %>
-    <% user_orders.where(ready_pick: true).order(:claim_time).each do |o| %>
+    <% user_orders.where(status: "seeking driver").order(:claim_time).each do |o| %>
       <%= o %>
     <% end %>
   <% else %>
-    <% all_orders.where(ready_pick: true).order(:claim_time).each do |o| %>
+    <% all_orders.where(status: "seeking driver").order(:claim_time).each do |o| %>
       <%= o %>
       <%= link_to "claim", edit_user_order_path(user, o) %>
     <% end %>

@@ -19,6 +19,8 @@ class OrdersController < ApplicationController
     if @order.save
       if @user.role != "admin"
         @user.orders << @order
+      else
+        User.find_by(name: order_params[:business_name]).orders << @order
       end
       flash[:notice] = "success"
       redirect_to user_orders_path
@@ -59,7 +61,7 @@ class OrdersController < ApplicationController
     @user = User.find(params[:user_id])
     @order = Order.find(params[:id])
 
-    if (@user.role == "business" && @order.ready_claim == true) || user.role == "admin"
+    if (@user.role == "business" && @order.status == "available") || @user.role == "admin"
       @order.destroy
       redirect_to user_orders_path(@user, @order)
     else
@@ -72,15 +74,13 @@ class OrdersController < ApplicationController
     @user = User.find(params[:user_id])
     @order = Order.find(params[:id])
 
-    if @order.awaiting_pick
+    if @order.status == "awaiting pickup"
       @order.picked_up = Time.current
-      @order.awaiting_pick = false
-      @order.transit = true
+      @order.status = "in transit"
       @order.save
-    elsif @order.transit
+    elsif @order.status == "in transit"
       @order.dropped_off = Time.current
-      @order.transit = false
-      @order.complete = true
+      @order.status = "complete"
       @order.save
     end
 
@@ -91,8 +91,7 @@ class OrdersController < ApplicationController
     @user = User.find(params[:user_id])
     @order = Order.find(params[:id])
 
-    @order.ready_pick = true
-    @order.awaiting_approval = false
+    @order.status = "seeking driver"
     @order.save
 
     redirect_to user_orders_path(@user, @order)
@@ -106,8 +105,7 @@ class OrdersController < ApplicationController
     charity.orders.delete(@order)
 
     @order.claim_time = nil
-    @order.ready_claim = true
-    @order.awaiting_approval = false
+    @order.status = "available"
     @order.save
 
     redirect_to user_orders_path(@user, @order)
@@ -116,6 +114,6 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:pickup_start, :pickup_end, :dropoff_end, :dropped_off, :ready_claim, :ready_pick, :transit, :complete, :claim_time, :picked_up, :awaiting_pick, :driver_name, :driver_admin_name, :awaiting_approval)
+    params.require(:order).permit(:pickup_start, :pickup_end, :dropoff_end, :dropped_off, :claim_time, :picked_up, :driver_name, :driver_admin_name, :charity_name, :business_name, :status)
   end
 end

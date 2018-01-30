@@ -6,7 +6,7 @@
     <% order_set = all_orders %>
   <% end %>
 
-  <% order_set.where(transit: true).order(:pickup_start).each do |o| %>
+  <% order_set.where(status: "in transit").order(:pickup_start).each do |o| %>
     <%= o %>
     <% case @user.role%>
     <% when "driver", "driver admin" %>

@@ -1,13 +1,13 @@
 <div class="orders">
   <h2>Ready for claim!</h2>
   <% if user.role == "business" %>
-    <% user_orders.where(ready_claim: true).order(:created_at).each do |o| %>
+    <% user_orders.where(status: "available").order(:created_at).each do |o| %>
       <%= o %>
       <%= link_to "edit", edit_user_order_path(user, o) %>
       <%= link_to "delete", user_order_path(user, o), method: "delete" %>
     <% end %>
   <% else %>
-    <% all_orders.where(ready_claim: true).order(:created_at).each do |o| %>
+    <% all_orders.where(status: "available").order(:created_at).each do |o| %>
       <%= o %>
       <% if user.role == "charity"  %>
         <%= link_to "claim", edit_user_order_path(user, o) %>
