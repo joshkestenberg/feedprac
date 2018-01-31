@@ -35,7 +35,7 @@ class OrdersController < ApplicationController
     @user = User.find(params[:user_id])
     @order = Order.find(params[:id])
 
-    unless Order.can_edit?(@user, @order)
+    unless @order.can_edit?(@user)
       flash[:alert] = "you're unauthorized to edit the order at this time"
       redirect_to user_orders_path(@user, @order)
     end
@@ -47,7 +47,7 @@ class OrdersController < ApplicationController
 
     if @order.update_attributes(order_params)
       if @user.role != "business" && @user.role != "admin"
-        Order.assign(@order, @user, order_params)
+        @order.assign(@user, order_params)
       end
 
       redirect_to user_orders_path(@user, @order)

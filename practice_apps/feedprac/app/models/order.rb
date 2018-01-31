@@ -6,31 +6,30 @@ class Order < ApplicationRecord
 
   attr_accessor :driver_name, :driver_admin_name, :charity_name, :business_name
 
-  def self.can_edit?(user, order)
-    if (user.role == "business" || user.role == "charity") && order.status != "available"
+  def can_edit?(user)
+    if (user.role == "business" || user.role == "charity") && self.status != "available"
       false
-    elsif (user.role == "driver" || user.role == "driver admin") && order.status != "seeking driver"
+    elsif (user.role == "driver" || user.role == "driver admin") && self.status != "seeking driver"
       false
     else
       true
     end
   end
 
-  def self.assign(order, user, order_params)
+  def assign(user, order_params)
     if user.role == "charity"
-      user.orders << order
+      user.orders << self
     elsif user.role == "driver admin"
-      user.orders << order
-      User.find_by(name: order_params[:driver_name]).orders << order
+      user.orders << self
+      User.find_by(name: order_params[:driver_name]).orders << self
     elsif user.role == "driver"
-      user.orders << order
-      User.find_by(driver_admin_id: user.id).orders << order if User.where(driver_admin_id: user.id).exists?
+      user.orders << self
+      User.find_by(driver_admin_id: user.id).orders << self if User.where(driver_admin_id: user.id).exists?
     else
-      User.find_by(name: order_params[:driver_name]).orders << order if order_params[:driver_name] != ""
-      User.find_by(name: order_params[:driver_admin_name]).orders << order if order_params[:driver_admin_name] != ""
-      User.find_by(name: order_params[:business_name]).orders << order if order_params[:business_name] != ""
-      User.find_by(name: order_params[:charity_name]).orders << order if order_params[:charity_name] != ""
-
+      User.find_by(name: order_params[:driver_name]).orders << self if order_params[:driver_name] != ""
+      User.find_by(name: order_params[:driver_admin_name]).orders << self if order_params[:driver_admin_name] != ""
+      User.find_by(name: order_params[:business_name]).orders << self if order_params[:business_name] != ""
+      User.find_by(name: order_params[:charity_name]).orders << self if order_params[:charity_name] != ""
     end
   end
 
